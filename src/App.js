@@ -4,7 +4,7 @@ import './App.css';
 function App() {
   return (
     <div className="App">
-      <CalculatorForm/>
+      <CalculatorForm egFirstNo="6" egSecondNo="7" egAns="13"/>
     </div>
   );
 }
