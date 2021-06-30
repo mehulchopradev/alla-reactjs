@@ -13,9 +13,13 @@ const selectors = {
   }
 }
 
+function handleChange() {
+
+}
+
 describe('calculator-form test suite', () => {
   test('it renders the component in the right initial state', () => {
-    render(<CalculatorForm egFirstNo="10" egSecondNo="20" egAns="30"/>);
+    render(<CalculatorForm egFirstNo="10" egSecondNo="20" egAns="30" handleChange={handleChange}/>);
 
     expect(screen.getByTestId(selectors.input.first)).toHaveValue('10');
     expect(screen.getByTestId(selectors.input.second)).toHaveValue('20');
