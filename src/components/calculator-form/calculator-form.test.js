@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, act } from '@testing-library/react';
 
 import CalculatorForm from './calculator-form.component';
 
@@ -19,7 +19,7 @@ function handleChange() {
 
 describe('calculator-form test suite', () => {
   test('it renders the component in the right initial state', () => {
-    render(<CalculatorForm egFirstNo="10" egSecondNo="20" egAns="30" handleChange={handleChange}/>);
+    render(<CalculatorForm firstNo="10" secondNo="20" ans="30" operation="+" handleChange={handleChange}/>);
 
     expect(screen.getByTestId(selectors.input.first)).toHaveValue('10');
     expect(screen.getByTestId(selectors.input.second)).toHaveValue('20');
@@ -28,37 +28,27 @@ describe('calculator-form test suite', () => {
   });
 
   test('it enables/disables button based on input', () => {
-    render(<CalculatorForm egFirstNo="10" egSecondNo="20" egAns="30"/>);
-
-    fireEvent.change(screen.getByTestId(selectors.input.second), {
-      target: { value: '' }
-    });
+    const { rerender } = render(<CalculatorForm firstNo="" secondNo="20" ans="30" handleChange={handleChange}/>);
     expect(screen.getByTestId(selectors.button.calculate)).toBeDisabled();
 
-    fireEvent.change(screen.getByTestId(selectors.input.second), {
-      target: { value: 'mehul' }
-    });
+    rerender(<CalculatorForm firstNo="10" secondNo="" ans="30" handleChange={handleChange}/>);
     expect(screen.getByTestId(selectors.button.calculate)).toBeDisabled();
 
-    fireEvent.change(screen.getByTestId(selectors.input.second), {
-      target: { value: '74' }
-    });
+    rerender(<CalculatorForm firstNo="10" secondNo="20" ans="30" handleChange={handleChange}/>);
     expect(screen.getByTestId(selectors.button.calculate)).toBeEnabled();
 
-
-    fireEvent.change(screen.getByTestId(selectors.input.first), {
-      target: { value: '' }
-    });
+    rerender(<CalculatorForm firstNo="mehul" secondNo="20" ans="30" handleChange={handleChange}/>);
     expect(screen.getByTestId(selectors.button.calculate)).toBeDisabled();
+  });
 
-    fireEvent.change(screen.getByTestId(selectors.input.first), {
-      target: { value: 'mehul' }
-    });
-    expect(screen.getByTestId(selectors.button.calculate)).toBeDisabled();
+  test('it calculates based on passed in props and returns the ans in the callback function', () => {
+    let actualAns;
+    const handleAns = ans => {
+      actualAns = ans;
+    }
 
-    fireEvent.change(screen.getByTestId(selectors.input.first), {
-      target: { value: '74' }
-    });
-    expect(screen.getByTestId(selectors.button.calculate)).toBeEnabled();
+    render(<CalculatorForm firstNo="20" secondNo="30" operation="*" handleChange={handleChange} handleAns={handleAns}/>);
+    fireEvent.click(screen.getByTestId(selectors.button.calculate));
+    expect(actualAns).toBe(600);
   });
 });
