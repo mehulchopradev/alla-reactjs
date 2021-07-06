@@ -1,40 +1,29 @@
-import { Component } from 'react';
-import './todo-form.styles.scss';
+import { useState } from 'react';
 
-class TodoForm extends Component {
+function TodoForm({ onNewTodo }) {
+  const [newTodo, setNewTodo] = useState('') // returns an array of size 2. First element -> state variable (newTodo)
+  // Second element -> setter function used to set the state (setNewTodo)
 
-  constructor() {
-    super();
-    this.state = {
-      newTodo: '',
-      isDisabled: true,
-    }
-  }
-  handleChange = ({ target: { value } }) => {
-    this.setState({
-      newTodo: value,
-      isDisabled: !value,
-    })
-  }
+  const [isDisabled, setIsDisabled] = useState(true);
 
-  onNewTodo = () => {
-    this.props.onNewTodo(this.state.newTodo);
+  const handleChange = ({ target: { value } }) => {
+    setNewTodo(value); // re-render the current functional component
+    setIsDisabled(!value);
+  };
 
-    this.setState({
-      newTodo: '',
-      isDisabled: false,
-    })
-  }
+  const saveTodo = () => {
+    onNewTodo(newTodo);
 
-  render() {
-    return (
-      <div className="todo-form">
-        <input type="text" value={this.state.newTodo} placeholder="Enter" onChange={this.handleChange} />
-        <button disabled={this.state.isDisabled} onClick={this.onNewTodo}>Save</button>
-      </div>
-    )
-  }
+    setNewTodo('');
+    setIsDisabled(true);
+  };
 
+  return (
+    <div className="todo-form">
+      <input type="text" value={newTodo} placeholder="Enter" onChange={handleChange} />
+      <button disabled={isDisabled} onClick={saveTodo}>Save</button>
+    </div>
+  )
 }
 
 export default TodoForm;
