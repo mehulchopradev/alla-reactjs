@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 
 import CalculatorForm from '../components/calculator-form/calculator-form.component';
 import CalcResults from '../components/calc-results/calc-results.component';
 
-function Calculator({ shouldFetchDefaultData = true }) {
+function Calculator({ shouldFetchDefaultData = true, todos }) {
   const [calcData, setCalcData] = useState({
     firstNo: '',
     secondNo: '',
@@ -63,8 +64,20 @@ function Calculator({ shouldFetchDefaultData = true }) {
         operation={operation}
         ans={ans}
       />
+      <h2>Top 3 todos planned</h2>
+      <ul>
+        {
+          todos.length ? (
+            todos.map(({ id, title }) => <li key={id}>{title}</li>)
+          ) : <span>No Todos planned!</span>
+        }
+      </ul>
     </div>
   )
 }
 
-export default Calculator;
+const mapStateToProps = ({ todosReducer: { todos }}) => ({
+  todos: todos.length ? todos.slice(0, 3) : [],
+})
+
+export default connect(mapStateToProps)(Calculator);

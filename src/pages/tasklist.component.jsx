@@ -1,16 +1,12 @@
 import { useState } from 'react';
+import { connect } from 'react-redux';
 import TodoList from '../components/todo-list/todo-list.component';
 import TodoForm from '../components/todo-form/todo-form.component';
 
-function TaskList() {
+import { removeTodos } from '../redux/todos/todos.actions';
 
-  const [todos, setTodos] = useState([]);
+function TaskList({ removeCompletedTodos }) {
   const [checkedTodos, setCheckedTodos] = useState([]);
-
-  const onNewTodo = (newTodo) => {
-    const id = todos.length + 1;
-    setTodos(todos.concat([{ id: id, title: newTodo, createdDate: new Date() }]));
-  };
 
   const handleChange = (todo, checked) => {
     if (checked) {
@@ -21,17 +17,25 @@ function TaskList() {
   };
 
   const removeTodos = () => {
-    setTodos(todos.filter(item => checkedTodos.indexOf(item) === -1));
+    removeCompletedTodos(checkedTodos);
     setCheckedTodos([]);
   };
 
   return (
     <div>
-      <TodoForm onNewTodo={onNewTodo} />
+      <TodoForm />
       <TodoList handleChange={handleChange} />
       <button disabled={!checkedTodos.length} onClick={removeTodos}>Clear completed todos</button>({checkedTodos.length})
     </div>
   )
 }
 
-export default TaskList;
+/* const mapStateToProps = (state) => ({
+  todos: state.todosReducer.todos
+}); */
+
+const mapDispatchToProps = (dispatch) => ({
+  removeCompletedTodos: (todosToRemove) => dispatch(removeTodos(todosToRemove))
+})
+
+export default connect(null, mapDispatchToProps)(TaskList);

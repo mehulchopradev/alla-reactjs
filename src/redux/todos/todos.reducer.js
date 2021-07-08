@@ -1,21 +1,25 @@
 const INITIAL_STATE = {
-  todos: [
-    {
-      id: 1,
-      title: 'Todo 1',
-      createdDate: new Date(),
-    },
-    {
-      id: 2,
-      title: 'Todo 2',
-      createdDate: new Date(),
-    }
-  ],
+  todos: [],
 }
 
 // action: type and payload
 const todosReducer = (currentState = INITIAL_STATE, action) => {
   switch (action.type) {
+    case 'ADD_TODO':
+      return {
+        ...currentState,
+        todos: currentState.todos.concat([{
+          id: currentState.todos.length + 1,
+          title: action.payload,
+          createdDate: new Date(),
+        }])
+      }
+    case 'REMOVE_TODOS':
+      const todosToRemove = action.payload;
+      return {
+        ...currentState,
+        todos: currentState.todos.filter(item => todosToRemove.indexOf(item) === -1)
+      }
     default: return currentState;
   }
 };
