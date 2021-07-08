@@ -1,85 +1,70 @@
+import { useState, useEffect } from 'react';
+
 import CalculatorForm from '../components/calculator-form/calculator-form.component';
 import CalcResults from '../components/calc-results/calc-results.component';
-import { Component } from 'react';
 
-class Calculator extends Component {
+function Calculator({ shouldFetchDefaultData = true }) {
+  const [calcData, setCalcData] = useState({
+    firstNo: '',
+    secondNo: '',
+    ans: '',
+    operation: '',
+  });
 
-  constructor() {
-    super();
-
-    console.log('constructor()');
-
-    this.state = {
-      firstNo: '',
-      secondNo: '',
-      ans: '',
-      operation: '',
+  useEffect(() => {
+    if (!shouldFetchDefaultData) {
+      return;
     }
-  }
 
-  // lifecycle methods (class based components)
-  async componentDidMount() {
-    // api calls for the data ?
-    console.log('componentDidMount()');
+    const fetchDefaultCalcData = async () => {
+      const url = 'https://my-json-server.typicode.com/mehulchopradev/calc-service/defaultCalcData';
+      const response = await fetch(url);
+      const jsonResponse = await response.json();
+      setCalcData(jsonResponse);
+    };
 
-    const url = 'https://my-json-server.typicode.com/mehulchopradev/calc-service/defaultCalcData';
-    const response = await fetch(url);
-    const jsonResponse = await response.json();
-    this.setState(jsonResponse);
-  }
+    fetchDefaultCalcData();
 
-  componentDidUpdate() {
-    // whenever state/props change in a component
-    console.log('componentDidUpdate()');
-  }
+    return () => {
+      // clean up code
+      console.log('I am returned from useEffect as callback function');
+    }
+  }, [shouldFetchDefaultData]); // [] dependencies will ensure that the side effect executes only once when the component gets mounted
 
-  componentWillUnmount() {
-    // clear up/close resources
-    console.log('componentWillUnmount()');
-  }
-
-  handleChange = (event) => {
+  const handleChange = (event) => {
     const { name, value } = event.target;
-    this.setState({
-      [name]: value,
-    });
-    // the above will cause render() to run again
-  }
+    setCalcData({...calcData, [name]: value});
+  };
 
-  handleOperationChange = ({ target: { value } }) => {
-    this.setState({
-      operation: value
-    }); // render
-  }
+  const handleOperationChange = ({ target: { value } }) => {
+    setCalcData({...calcData, operation: value});
+  };
 
-  handleAns = ans => {
-    this.setState({
-      ans,
-    }) // render
-  }
+  const handleAns = ans => {
+    setCalcData({...calcData, ans});
+  };
 
-  render() {
-    console.log('render()');
-    return (
-      <div className='calculator'>
-        <CalculatorForm
-          firstNo={this.state.firstNo}
-          secondNo={this.state.secondNo}
-          ans={this.state.ans}
-          operation={this.state.operation}
-          handleChange={this.handleChange}
-          handleOperationChange={this.handleOperationChange}
-          handleAns={this.handleAns}
-        />
-        <CalcResults
-          firstNo={this.state.firstNo}
-          secondNo={this.state.secondNo}
-          operation={this.state.operation}
-          ans={this.state.ans}
-        />
-      </div>
-    )
-  }
+  const { firstNo, secondNo, ans, operation } = calcData;
+
+  return (
+    <div className='calculator'>
+      <CalculatorForm
+        firstNo={firstNo}
+        secondNo={secondNo}
+        ans={ans}
+        operation={operation}
+        handleChange={handleChange}
+        handleOperationChange={handleOperationChange}
+        handleAns={handleAns}
+      />
+      <CalcResults
+        firstNo={firstNo}
+        secondNo={secondNo}
+        operation={operation}
+        ans={ans}
+      />
+    </div>
+  )
 }
 
 export default Calculator;

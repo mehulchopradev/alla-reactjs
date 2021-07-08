@@ -28,7 +28,7 @@ function TaskList() {
   return (
     <div>
       <TodoForm onNewTodo={onNewTodo} />
-      <TodoList todos={todos} handleChange={handleChange} />
+      <TodoList handleChange={handleChange} />
       <button disabled={!checkedTodos.length} onClick={removeTodos}>Clear completed todos</button>({checkedTodos.length})
     </div>
   )

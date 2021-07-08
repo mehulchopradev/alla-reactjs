@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import './todo-list.styles.scss';
 import TodoItem from '../todo-item/todo-item.component'
 
@@ -22,4 +23,10 @@ function TodoList({ todos, handleChange }) {
   )
 }
 
-export default React.memo(TodoList); // return a memoized version of the functional component TodoList
+// a callback function
+// it should map redux state to props for the current component
+const mapStateToProps = (state) => ({
+  todos: state.todosReducer.todos
+});
+
+export default connect(mapStateToProps)(React.memo(TodoList)); // return a memoized version of the functional component TodoList
