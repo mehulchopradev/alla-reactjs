@@ -31,7 +31,8 @@ function TaskList({ removeCompletedTodos }) {
 }
 
 /* const mapStateToProps = (state) => ({
-  todos: state.todosReducer.todos
+  todos: state.todosReducer.todos,
+  calc: state.calcReducer.calcData
 }); */
 
 const mapDispatchToProps = (dispatch) => ({
