@@ -31,7 +31,7 @@ function BookList({ books }) {
 }
 
 const mapStateToProps = (state) => ({
-  books: state.libraryReducer.books
+  books: state.libraryReducer.books,
 })
 
 export default connect(mapStateToProps)(BookList);

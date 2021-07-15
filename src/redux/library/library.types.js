@@ -1,6 +1,10 @@
 const LibraryActionTypes = {
+  START_BOOKS_FETCH: 'START_BOOKS_FETCH',
+  START_BOOK_FETCH: 'START_BOOK_FETCH',
   SET_BOOKS: 'SET_BOOKS',
   SET_BOOK: 'SET_BOOK',
+  END_BOOKS_FETCH: 'END_BOOKS_FETCH',
+  END_BOOK_FETCH: 'END_BOOK_FETCH',
 };
 
 export default LibraryActionTypes;
