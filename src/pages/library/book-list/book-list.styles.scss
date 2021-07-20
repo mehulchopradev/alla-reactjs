@@ -2,3 +2,9 @@ table {
   margin-left: auto;
   margin-right: auto;
 }
+
+.book-list-container {
+  background-color: red;
+  position: relative;
+  z-index: 2;
+}
