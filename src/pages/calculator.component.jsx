@@ -20,8 +20,12 @@ function Calculator({ shouldFetchDefaultData = true, todos }) {
     const fetchDefaultCalcData = async () => {
       const url = 'https://my-json-server.typicode.com/mehulchopradev/calc-service/defaultCalcData';
       const response = await fetch(url);
-      const jsonResponse = await response.json();
-      setCalcData(jsonResponse);
+      if (!response.ok) {
+        setCalcData(null);
+      } else {
+        const jsonResponse = await response.json();
+        setCalcData(jsonResponse);
+      }
     };
 
     fetchDefaultCalcData();
@@ -44,6 +48,10 @@ function Calculator({ shouldFetchDefaultData = true, todos }) {
   const handleAns = ans => {
     setCalcData({...calcData, ans});
   };
+
+  if (!calcData) {
+    throw new Error('Unable to fetch the calculator data');
+  }
 
   const { firstNo, secondNo, ans, operation } = calcData;
 

@@ -1,8 +1,17 @@
-import { useUsers } from "../hooks/users.hooks";
+// import { useEffect, useState } from "react";
+// import axios from "axios";
 
-function UsersTable() {
+function UsersTable({ users }) {
+  /* const [ users, setUsers ] = useState([]);
 
-  const users = useUsers();
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const { data: users } = await axios.get('https://jsonplaceholder.typicode.com/users');
+      setUsers(users);
+    };
+
+    fetchUsers();
+  }, []); */
 
   return (
     <table border="1">
