@@ -1,5 +1,9 @@
 import { useState } from 'react';
 
+import { connect } from 'react-redux';
+
+import { addTodo } from '../../redux/todos/todos.actions';
+
 function TodoForm({ onNewTodo }) {
   const [newTodo, setNewTodo] = useState('') // returns an array of size 2. First element -> state variable (newTodo)
   // Second element -> setter function used to set the state (setNewTodo)
@@ -26,4 +30,8 @@ function TodoForm({ onNewTodo }) {
   )
 }
 
-export default TodoForm;
+const mapDispatchToProps = (dispatch) => ({
+  onNewTodo: (newTodoTitle) => dispatch(addTodo(newTodoTitle))
+});
+
+export default connect(null, mapDispatchToProps)(TodoForm);
